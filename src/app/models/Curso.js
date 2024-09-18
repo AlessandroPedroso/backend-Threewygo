@@ -6,10 +6,9 @@ class Curso extends Model {
       {
         titulo: Sequelize.STRING,
         descricao: Sequelize.STRING,
-        ativo: Sequelize.BOOLEAN,
-        data_determino: Sequelize.DATE,
+        data_termino: Sequelize.DATE,
       },
-      { sequelize },
+      { sequelize, tableName: 'curso' },
     );
     return this;
   }
