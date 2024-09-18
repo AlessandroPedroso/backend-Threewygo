@@ -24,6 +24,7 @@ class CursoController {
       return response.status(400).json({ errors: err.errors });
     }
 
+    // pega as informações do body
     const { titulo, descricao, dataTermino } = request.body;
 
     //faz a verificação da data termino em relação a data atual
@@ -33,6 +34,7 @@ class CursoController {
       });
     }
 
+    // prepara as informações em um objeto para ser enviado para o banco de dados
     const curso = {
       titulo,
       descricao,
