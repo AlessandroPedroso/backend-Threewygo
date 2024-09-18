@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 import { routes } from './routes/index.js';
+import './database/index.js';
 
 class App {
   constructor() {

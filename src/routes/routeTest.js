@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import packageJson from '../../package.json' assert { type: 'json' };
+import packageJson from '../../package.json';
 
 export const testeRouter = Router();
 
