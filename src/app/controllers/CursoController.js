@@ -7,7 +7,8 @@
 //  */
 import * as Yup from 'yup';
 import { formatDataBanco, verificarData } from '../../utils';
-import Curso from '../models/Curso';
+import { CursoService } from '../../service/service.curso';
+// import Curso from '../models/Curso';
 
 class CursoController {
   async store(request, response) {
@@ -41,12 +42,13 @@ class CursoController {
       data_termino: formatDataBanco(dataTermino),
     };
 
-    // realiza o cadastro no banco de dados
-    await Curso.create(curso);
+    const service = new CursoService();
+    const result = await service.create(curso)
+    // // realiza o cadastro no banco de dados
 
     return response
       .status(200)
-      .json({ message: 'Curso cadastrado com sucesso!' });
+      .json({ message: result });
   }
 }
 
