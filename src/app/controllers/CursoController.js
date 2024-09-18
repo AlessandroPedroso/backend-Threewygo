@@ -26,12 +26,11 @@ class CursoController {
 
     const { titulo, descricao, dataTermino } = request.body;
 
+    //faz a verificação da data termino em relação a data atual
     if (!verificarData(dataTermino)) {
-      return response
-        .status(400)
-        .json({
-          message: 'Data termino do curso não pode ser menor que data atual!',
-        });
+      return response.status(400).json({
+        message: 'Data termino do curso não pode ser menor que data atual!',
+      });
     }
 
     const curso = {
@@ -40,6 +39,7 @@ class CursoController {
       data_termino: formatDataBanco(dataTermino),
     };
 
+    // realiza o cadastro no banco de dados
     await Curso.create(curso);
 
     return response
