@@ -1,0 +1,24 @@
+{
+	"name": "backend-threewygo",
+	"version": "1.0.0",
+	"description": "Projeto",
+	"main": "src/server.js",
+	"type": "module",
+	"author": {
+		"name": "Alessandro Schquel Pedroso",
+		"email": "alessandropedrosoti@gmail.com",
+		"email-2": "alessandroschuquel.dev@gmail.com",
+		"url": "https://github.com/AlessandroPedroso/"
+	},
+	"scripts": {
+		"dev": "node --watch --no-warnings ."
+	},
+	"keywords": [],
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.21.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.1"
+	}
+}
