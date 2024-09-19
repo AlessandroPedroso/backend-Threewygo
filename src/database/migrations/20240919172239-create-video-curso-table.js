@@ -8,6 +8,10 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
       },
+      descricao: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       link_video: {
         type: Sequelize.STRING,
         allowNull: false,

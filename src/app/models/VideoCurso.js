@@ -4,6 +4,7 @@ class VideoCurso extends Model {
   static init(sequelize) {
     super.init(
       {
+        descricao: Sequelize.STRING,
         link_video: Sequelize.STRING,
         path_image: Sequelize.STRING,
       },
