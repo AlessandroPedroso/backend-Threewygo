@@ -21,7 +21,8 @@
 		"rules": {
 			"recommended": true,
 			"complexity": {
-				"noThisInStatic": "off"
+				"noThisInStatic": "off",
+				"useOptionalChain": "off"
 			}
 		}
 	},

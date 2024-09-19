@@ -8,14 +8,14 @@ class Curso extends Model {
         descricao: Sequelize.STRING,
         data_termino: Sequelize.DATE,
       },
-      { sequelize, modelName: 'curso', tableName: 'curso' },
+      { sequelize, modelName: 'Curso', tableName: 'curso' },
     );
     return this;
   }
   static associate(models) {
     this.hasMany(models.VideoCurso, {
       foreignKey: 'curso_id',
-      as: 'videoCurso',
+      as: 'videos',
     });
   }
 }
