@@ -7,6 +7,7 @@ const uploads = multer(multerConfig);
 const routeCurso = Router();
 
 routeCurso.get('/', CursoController.index);
+routeCurso.get('/:id', CursoController.show);
 routeCurso.post('/', uploads.single('file'), CursoController.store);
 routeCurso.put('/:id', uploads.single('file'), CursoController.update);
 routeCurso.delete('/:id', CursoController.delete);

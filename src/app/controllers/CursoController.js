@@ -51,6 +51,10 @@ class CursoController {
 
     return response.status(200).json({ message: result.message });
   }
+
+  async show(request, response) {
+    await service.show(request, response);
+  }
 }
 
 export default new CursoController();

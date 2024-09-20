@@ -170,6 +170,27 @@ export class CursoService {
     return cursosVideos;
   }
 
+  // busca um curso especifico com seus videos
+  async show(request, response) {
+    const { id } = request.params;
+    const idCurso = Number(id);
+    const cursosVideos = await Curso.findOne({
+      where: { id: idCurso },
+      include: [
+        {
+          model: VideoCurso,
+          as: 'videos',
+          attributes: ['url', 'descricao', 'link_video', 'path_image'],
+        },
+      ],
+    });
+
+    if (!cursosVideos)
+      return response.status(400).json({ message: 'Curso não encontrado' });
+
+    response.status(200).json(cursosVideos);
+  }
+
   async delete(request) {
     const { id } = request.params;
     const result = await Curso.findByPk(id);
