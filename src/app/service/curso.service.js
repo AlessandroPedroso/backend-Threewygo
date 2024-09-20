@@ -1,9 +1,10 @@
 import { QueryTypes, Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
 import config from '../../config/database.js';
 import { formatDataBanco, verificarData } from '../../utils';
 import Curso from '../models/Curso';
-
+import VideoCurso from '../models/VideoCurso.js';
 const sequelize = new Sequelize(config);
 export class CursoService {
   async create(request, response) {
@@ -19,6 +20,9 @@ export class CursoService {
     } catch (err) {
       return response.status(400).json({ errors: err.errors });
     }
+
+    //pega as inforamções do request file
+    const { filename: img_curso } = request.file;
 
     // pega as informações do body
     const { titulo, descricao, dataTermino } = request.body;
@@ -37,6 +41,7 @@ export class CursoService {
     const curso = {
       titulo,
       descricao,
+      img_curso,
       data_termino: formatDataBanco(dataTermino),
     };
 
@@ -48,9 +53,9 @@ export class CursoService {
 
   async update(request, response) {
     const schema = Yup.object({
-      titulo: Yup.string().required('Campo obrigatório'),
-      descricao: Yup.string().required('Campo obrigatório'),
-      dataTermino: Yup.string().required('Campo obrigatório'),
+      titulo: Yup.string(),
+      descricao: Yup.string(),
+      dataTermino: Yup.string(),
     });
 
     // verifica campos validados pelo Yup
@@ -72,6 +77,12 @@ export class CursoService {
       },
     );
 
+    let path;
+
+    if (request.file) {
+      path = request.file.filename;
+    }
+
     //verifica se o curso existe
     if (!result) {
       return { error: 'Curso não encontrado!' };
@@ -79,6 +90,11 @@ export class CursoService {
 
     // pega as informações do body
     const { titulo, descricao, dataTermino } = request.body;
+
+    //caso envia campo em branco na api retorna json vazio
+    if (!titulo && !descricao && !path) {
+      return { error: 'campos vazio' };
+    }
 
     //faz a verificação da data termino em relação a data atual
     const dataInvalida = this._verificacaoDataTermino(dataTermino);
@@ -92,12 +108,13 @@ export class CursoService {
 
     // QUERY DE UPDATE DO CURSO
     await sequelize.query(
-      'UPDATE curso SET titulo = :titulo, descricao = :descricao, data_termino = :dataTermino where id = :id ',
+      'UPDATE curso SET titulo = :titulo, descricao = :descricao, data_termino = :dataTermino, img_curso = :imgCurso where id = :id ',
       {
         replacements: {
           titulo: titulo,
           descricao: descricao,
           dataTermino: formatDataBanco(dataTermino),
+          imgCurso: path,
           id: id,
         },
         type: QueryTypes.UPDATE,
@@ -109,18 +126,48 @@ export class CursoService {
 
   // busca os cursos ativo maior ou igual a data atual
   async list() {
-    const result = await sequelize.query(
-      'SELECT * FROM curso where data_termino >= CURRENT_DATE',
-      {
-        type: QueryTypes.SELECT,
-      },
-    );
+    // const result = await sequelize.query(
+    //   'SELECT * FROM curso where data_termino >= CURRENT_DATE',
+    //   {
+    //     type: QueryTypes.SELECT,
+    //   },
+    // );
 
-    if (!result) {
+    const cursosAtivos = await Curso.findAll({
+      where: {
+        data_termino: {
+          [Op.gte]: new Date(),
+        },
+      },
+    });
+
+    if (!cursosAtivos) {
       return { error: 'Cursos não encontrados!' };
     }
 
-    return result;
+    // const cursosVideos = await Curso.findAll({
+    //   include: [
+    //     {
+    //       model: VideoCurso,
+    //       as: 'videos',
+    //       attributes: ['url', 'descricao'],
+    //     },
+    //   ],
+    // });
+
+    //refatorando objeto para enviar para o front
+    const cursosVideos = cursosAtivos.map((curso) => {
+      const newCurso = {
+        id: curso.id,
+        titulo: curso.titulo,
+        descricao: curso.descricao,
+        dataTermino: curso.data_termino,
+        imagemCurso: curso.url,
+      };
+      return newCurso;
+    });
+
+    return cursosVideos;
   }
 
   async delete(request) {

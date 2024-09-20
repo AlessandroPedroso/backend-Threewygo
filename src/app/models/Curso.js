@@ -7,6 +7,13 @@ class Curso extends Model {
         titulo: Sequelize.STRING,
         descricao: Sequelize.STRING,
         data_termino: Sequelize.DATE,
+        img_curso: Sequelize.STRING,
+        url: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `http://localhost:3000/curso-file/${this.img_curso}`;
+          },
+        },
       },
       { sequelize, modelName: 'Curso', tableName: 'curso' },
     );

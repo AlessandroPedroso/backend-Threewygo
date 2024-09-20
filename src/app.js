@@ -17,6 +17,10 @@ class App {
       '/video-file',
       express.static(resolve(__dirname, '..', 'upload')),
     );
+    this.app.use(
+      '/curso-file',
+      express.static(resolve(__dirname, '..', 'upload')),
+    );
   }
 
   routes() {

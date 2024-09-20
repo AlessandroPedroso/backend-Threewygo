@@ -10,7 +10,7 @@ class VideoCurso extends Model {
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `http://localhost:3000/video-file/${this.path}`;
+            return `http://localhost:3000/video-file/${this.path_image}`;
           },
         },
       },

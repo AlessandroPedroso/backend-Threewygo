@@ -18,7 +18,7 @@ class CursoController {
       return response.status(400).json({ message: result.error });
     }
 
-    return response.status(200).json({ message: result.message });
+    return response.status(201).json({ message: result.message });
   }
 
   async update(request, response) {
@@ -29,7 +29,7 @@ class CursoController {
       return response.status(400).json({ message: result.error });
     }
 
-    return response.status(200).json({ message: result.message });
+    return response.status(200).json(result);
   }
 
   async index(request, response) {
