@@ -9,3 +9,4 @@ const uploads = multer(multerConfig);
 export const routeVideoCurso = Router();
 
 routeVideoCurso.post('/', uploads.single('file'), VideoCursoController.store);
+routeVideoCurso.get('/', VideoCursoController.index);

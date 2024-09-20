@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Curso from '../models/Curso.js';
 import VideoCurso from '../models/VideoCurso.js';
 export class VideoCursoService {
   async create(request, response) {
@@ -31,5 +32,29 @@ export class VideoCursoService {
     await VideoCurso.create(video);
 
     return { message: 'Video criado com Sucesso!' };
+  }
+
+  async list(request, response) {
+    const videosCurso = await VideoCurso.findAll({
+      include: [
+        {
+          model: Curso,
+          as: 'curso',
+          attributes: [
+            'id',
+            'titulo',
+            'descricao',
+            'data_termino',
+            'img_curso',
+          ],
+        },
+      ],
+    });
+
+    if (!videosCurso) {
+      return response.status(400).json({ message: 'Videos não encontrado.' });
+    }
+
+    return response.status(200).json(videosCurso);
   }
 }
