@@ -57,4 +57,30 @@ export class VideoCursoService {
 
     return response.status(200).json(videosCurso);
   }
+
+  async show(request, response) {
+    const { id } = request.params;
+    const idVideo = Number(id);
+    const videoCurso = await VideoCurso.findOne({
+      where: { id: idVideo },
+      include: [
+        {
+          model: Curso,
+          as: 'curso',
+          attributes: [
+            'id',
+            'titulo',
+            'descricao',
+            'data_termino',
+            'img_curso',
+          ],
+        },
+      ],
+    });
+
+    if (!videoCurso)
+      return response.status(400).json({ message: 'Curso não encontrado' });
+
+    response.status(200).json(videoCurso);
+  }
 }

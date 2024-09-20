@@ -11,6 +11,10 @@ class VideoCursoController {
   async index(request, response) {
     await service.list(request, response);
   }
+
+  async show(request, response) {
+    await service.show(request, response);
+  }
 }
 
 export default new VideoCursoController();
