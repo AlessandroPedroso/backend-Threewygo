@@ -16,6 +16,8 @@ class Curso extends Model {
     this.hasMany(models.VideoCurso, {
       foreignKey: 'curso_id',
       as: 'videos',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   }
 }

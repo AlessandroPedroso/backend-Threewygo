@@ -23,6 +23,8 @@ class VideoCurso extends Model {
     this.belongsTo(models.Curso, {
       foreignKey: 'curso_id',
       as: 'curso',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   }
 }
